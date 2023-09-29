@@ -5,3 +5,4 @@ To use this:
 4. Click on the topmost HTML tag and copy as HTML
 5. Paste its contents in index.html
 6. run 'scripted'
+7. check output.txt file
