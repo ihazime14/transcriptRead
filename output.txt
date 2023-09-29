@@ -1,0 +1,978 @@
+all right folks, welcome back.
+Um Let's get started.
+I hope you had a good weekend and are in fact ready to dive
+into um him. All right, dive into a little
+more technical content. So I'm going to remind you about
+the Perceptron algorithm. I see that there are a few
+questions about the algorithm on pizza, especially like, you
+know, how does it actually function and why there's a
+function the way it does. So we'll delve a little bit more
+into that. And then we also look at where it breaks.
+We've already talked about places where it might break and think about ways in which we can
+fix that. Oh, a few announcements before we
+get started. Uh, as you are probably aware,
+uh, if you aren't aware, this is probably because you haven't
+turned on your Cannas announcements, uh which you
+should. Uh, homework one has already
+been released. Uh Typically we try to release
+homework, you know, after the previous homework is done, we
+don't expect you as soon as you submit one to get started on the other
+homework, but some students, you know, submit early and so they
+want to get a head start on the next uh next homework and that's
+totally fine. Uh However, you should be
+reading this homework and at least seeing what parts of it
+you can attempt because pretty much most of it you
+should be able to attend by the end of today's uh today's
+lecture. There's gonna be one question
+that you're still going to need a little bit additional context.
+On the other thing that I want to
+remind you is especially in the light of large language models,
+we have a new slightly different collaborative policy
+policy than we had in the past primarily because, you know, how should you sort of
+if you should and how you should interact with these models.
+So please review that carefully. You've said a little bit about
+this in the first lecture, but it's also detailed in your
+syllabus and if there are any questions, of course, you can
+send us an email and I might add that in class. All right.
+Um Yeah, you know, the TLDR version is uh don't use anything
+to solve your problems for you. Uh Aiding in your understanding
+is fine, including other people. By the way, aiding in your
+understanding of the concepts is fine.
+If you do use something significantly, you do have to
+disclose that in your uh in your write up. OK.
+Uh Here are the topics for homework one.
+So as you'll notice here, we have these, these three.
+Well, I, I should say this one and this one a, a more sort of
+uh review, review things. This should be reviewed from
+your um from your linear algebra
+days. Uh And the Nampa exercise is
+essentially to get you to warm up to using NAMPA because we'll be doing a
+significant project next. So our next assignment is going
+to be project one, which is going to be a significant uh
+coding endeavor. Uh And then you'll have a
+question on linear binary classifiers just in general and
+then the Perceptron algorithm in particular.
+So a couple of per uh um uh sorry problems on
+Perceptron. And then you'll have at the end
+this SGD with Logistic Law. So we've not yet talked about
+SGD. So we'll talk about that in the next class, but you'll
+have enough to understand what the question is asking by the
+end of this class? Um All right.
+And then, you know, related to that tomorrow, you have a Python
+tutorial, the details are on your calendar. Um I believe we have also
+released the related notes and such.
+So you can sort of work on that before uh before the before the
+tutorial. Uh One thing I want to point out
+is we have a setup guide, which sort of details how you can get
+Python 3.11 on your on your system.
+That's the most sort of recent stable release version of
+Python. So get that installed running on
+your, on your preferred system, your laptop presumably, or if
+you use a desktop or if you use one of the key machines, make
+sure that those things are actually running. Um If you do run into issues
+though, uh that's what the tutorial is sort of set up for.
+So if there are any set up issues, you can bring that up.
+Uh or then if there are issues with sort of working through
+those uh those notes, you can bring that up as well. Um Another thing I want to point
+out with the homework is that uh we released the assignment on
+canvas, but we ask you to submit it on grade scope.
+This is for ease of grading. And such one of the things that you have
+to do is assign pages to or quest.
+Yeah, pages to questions. Uh And if you don't do that, it
+becomes really difficult in a class of 300 plus students for
+the graders to, you know, go through each set of questions or
+find out where exactly you have graded it.
+So you do have to make sure that you are saving some amount of
+time for uploading the, the, the the content.
+So, you know, depending on how you're scanning it and such,
+make sure that you have some time for uploading the content
+as well as for assigning pages. This is all built into the time
+that we're giving you for finishing the homework.
+All right. So uh that's it for the
+announcements. Any questions on any effects? Yeah.
+OK. OK.
+Uh Here, as promised, I I mentioned that I'll probably have a few uh few
+advertisements from different student groups. Um Here is uh MC. So ma is doing a couple of
+different initiatives this time. So you can see the two different
+initiatives. They also have um uh an application form
+available. So uh you know, that should give
+you additional information about them as well if you are at all
+interested in a student group that's interested in A I and
+looking at projects in A I uh um A fair number of them have
+taken 4 45 in the past. So I would recommend at least
+checking them out and seeing if that is a good fit for you. All right.
+So uh what is our agenda for today? Um As you might recall, I know it
+was a week back, but we were looking at uh linear classifiers
+and we were looking at the algorithm and that's like the
+language that we need to be able to talk about, uh talk about the
+content for today's lecture. And so I'm going to sort of
+remind you, so it's gonna be a brief recap.
+Uh But it's also going to give you a little bit more um
+examples to work through a little more details about the Perron algorithm.
+And then we're going to take those two big assumptions we've
+made about the underlying data set and break that we're going
+to sort of break the assumption that we said, you know, it has
+to be linearly separable. Uh And we also said that it
+shouldn't have an offset. And so those two things, we're
+going to actually break one at a time and see if we can still
+solve the problem. Uh as per usual, the form is
+open and available for you. So if you have questions, you
+can uh put that on there and I'll, I'll check it. All right.
+So here is the uh definition of how we, how we define a linear
+classifier, sort of a natural way to define a linear
+classifier. So here is my data set. How, what are the two components
+of this data set? This data set is defined by two
+broadly speaking two components, what are those two components? What are the things if I put
+this together in a in set notation? What are the two
+things corresponding to that? Yes, absolutely.
+The data point and the label that's excellent for this data
+set. What are the set of labels? What are the possible value?
+Yes, exactly.
+It's positive and negative. So this makes it a particular
+kind of classification problem. What kind of classification
+problem? Binary classification problem?
+OK. So you have uh data points and
+you have labels uh these data points they come from.
+What space? What kinds of things are? Are
+these data points? What are they? Yeah, they are vectors from mid
+space. Which vector space? This this
+data set. Yes, they are from R two. They are from vector space.
+We're gonna assume that they're from space uh RD. Uh But in this case, they are
+from R two. Excellent.
+So here is my data set, right? My training data set, my
+training data set has uh data points X I and labels Y I.
+Uh And as you helped me with um the X I typically come from RD.
+For this example, it comes from R two and Y I comes from the
+space of plus one or minus one. That's how we're going to
+interpret. Uh the positive.
+I'm sorry, the, the two, the binary labels here.
+OK. So I had mentioned in the last
+class or maybe in the first lecture.
+That sometimes when we say binary labels, we might actually
+say zeros and ones, but we'll stick to plus one and minus one
+because of the way that we're defining classifiers here.
+Uh What we want to learn is a linear decision boundary in this
+case without offset. So for example, uh we want to
+learn a decision boundary that looks like this. Now, I uh had put in a theater
+here. Uh The theta here is a vector
+that defines this particular decision boundary. Uh What is the property that uh
+what is the relationship of theta and the decision boundary? Yes. Yes.
+The is in fact oral to this decision boundary.
+Excellent. Um So, uh what is the equation of
+this decision boundary? What's the equation of this? So
+you, you may specify a decision boundary by just specifying
+theta or you may specify it by specifying, you know, sometimes
+the b if there's an offset or you may specify it by actually
+giving the equation of the decision boundary.
+What is the equation of that decision boundary? Yeah, theta X equals zero.
+Exactly theta dot X equals zero.
+Excellent. All right.
+What is the dimensionality of the, what space is theta come from? Yeah, exactly.
+Theta also comes from ad this is excellent because it would be great.
+It's wonderful. OK. All right.
+So uh so I want to learn this linear decision boundary.
+Uh And I'm going to specify my decision boundary.
+I'm sorry, I'm going to specify a classifier this way.
+So this is the definition of my classifier. And as I mentioned here, X is
+the input and theta is the parameter. OK. I say sign of theta dot X which
+is the predictor or the prediction for a specific input.
+X given a parameter that defines the decision
+boundary, the X equal to zero. So I take the dot product of
+theta and X and I look at the sign which means any data point
+on this side, any data point on this side will
+be predicted as what exactly any data point that is on the
+same side of the decision boundary as data will be
+predicted as positive, any data point on this side will be
+predicted as excellent.
+And any data point that is on the decision boundary will be
+predicted as that's excellent. That is fantastic.
+Yeah, it's completely arbitrary. The sign of zero is not defined
+and therefore we just say it can be anything just you
+might as well toss fine at that point.
+And therefore we assume it's misclassified.
+Excellent. OK.
+So when we write out the error of the um of the data set with
+respect to a particular value of data.
+So again, this is the error of the training error of the
+data set. This one with respect to this decision
+boundary specified by the, I'm going to look at the number
+of times that this data misclassified each of my data
+points. In my training data set.
+So when is there a disagreement between the prediction and the
+true label? OK.
+And divide by N so that I get a value that's between zero and
+one. So one is where everything is
+misclassified zero is where nothing is misclassified. In this particular case, what is
+E sub N or the for this data set? Exactly? It's zero? Excellent. Uh And then I also said last
+time that we might rewrite this this way, right? So it's why I theta dot X I, the product of
+these two things will be positive anytime there's
+agreement between the true label, that's the true label. And this part is used for prediction. So when there's agreement
+between the true label and the prediction, the product is going to be
+positive, otherwise it's going to be zero or negative.
+And so we're going to count those times when we get a value
+of negative or zero. And that's going to be a count
+of number of misclassified points.
+And then we're going to divide by N.
+So we get a fraction, this lies in the closed interval
+zero and one questions so far. Um All right.
+Uh The next uh the next thing that I wanna uh mention is uh linear.
+So I want to define linear separability.
+We sort of saw this intuitively last time. So uh our definition of linear
+separability who uh there we go uh linear separability, I mean
+intuitively, it is like oh a data set like this is linear
+separable, a data set like this is not linear separable.
+Uh Because there's no decision boundary that can separate,
+split the space into positive and negative.
+In our case, we're going to assume first that we're defining
+everything without offset first. So we say this uh a given data
+set, this one is linearly separable if there exists a decision
+boundary that perfectly splits the data set, right? It
+perfectly predicts the data set. So such that Y I theta dot X I is greater than zero, it's
+positive for every one of my data points. Does that make sense? So why I theta at X I has to be
+positive for every one of my data points for this data to be
+uh a separator. And therefore such a data must
+exist for the data set to be linearly separable. And additionally, I'm going to
+say that we refer to theta dot X equal to zero as the
+separating hyperlink. OK.
+So it's a set of points X that satisfies the X equal to zero.
+That's another way of saying the same thing. And just so you're aware all of
+the notes that I'm writing on the, on the slides will be
+available on canvas at the end of the class. All right.
+So given that definition here is our Perceptron algorithm and the
+claim associated with the Perceptron algorithm.
+So remember the Perceptron algorithm says
+that on input um uh on a for an input data set
+as sub N uh we start with an
+initialization of theta um zero equal to the zero vector and then we go through it.
+So this is where we ended last time we said that.
+Ok, then um while there exists a misclassified point, so if any
+one of my data points is misclassified by my current
+guest of data. Uh then I should go through the
+entire data set and check one at a time to see if that data point was data point.
+I misclassified by the current guests, the king actually. So the can get guess of the
+classifier is in fact a sign of OK. Not. So when I had a current guess of
+my classifier, the K I used that to predict all of
+my, all of my data points. And was this data point
+misclassified by that particular uh particular um guess of classifier? So in this
+particular case, for instance, I would take the is data point.
+I plug that in here. I check what the sign is and I
+check to see is this sign in agreement with Y I.
+That's basically what I'm doing when I'm checking this. And then if it is in fact less
+than equal to zero and it was misclassified or delay on the
+boundary, then I update my guess of theta.
+And the way I update my guess of theta is either by adding X I or
+subtracting X I from the current guess. So this is my current guess of
+theta. I'm either adding X I or I'm
+subtracting X I. When do I add X I? When my
+current guess of theta misclassified a data point that
+was positively classified. If my current guess of theta
+misclassified a data point that was negatively classified, then
+I subtract that by give me a second. OK. Now, this particular notion of
+alge uh this particular notion of um
+uh uh the Perceptron algorithm will allow us an excellent claim, a very
+remarkable claim. The remarkable claim being that if the data are in fact
+linearly separable, if the data are linearly separable, then
+what will converge? That's right.
+It will converge. Converging is OK.
+Converge with what convert just means it stops and
+gives us a a response with what? Yes.
+Who said that? Yes, it, it gives us a linear decision boundary.
+That, that what? Sure the zero error, yeah, with zero
+training error that's very critical, it's zero
+training error. OK.
+So it gives us a date uh a decision boundary that in fact
+is the separating hyperplane for that training data set. OK. I want you to take this in for a
+second and then I will definitely get to your question. I want you to take this in for a
+second. This very simple algorithm is going to take a data data set in 1000 dimensional space, a
+space that we cannot even visualize, it's going to go through the
+data set one data point at a time, just keep adding or
+subtracting data points. And eventually it's going to
+stop with a separating hyperplane. A it's not clear why, why it
+should do that, why it should even stop? That's what you're gonna prove.
+B it's not even clear what this, what this update is really
+doing, right? Like why are these
+update? Why does this update even make sense? But there are
+some characteristics of this algorithm that are so critical that are so interesting and so
+appealing that we actually want to carry it forward to much more
+complex uh complex uh models. Now, the thing that I want to
+point out here is this is a great claim.
+It is not a panacea for all possible data sets though, if it
+is not linearly separable, it turns out it does really badly. But if it is linearly separable,
+it is eventually going to converge and it is going to give
+you a separating hyperplane. Now, I'll take your question.
+Um So when you initialize the data zero to the zero vector,
+does that mean every point will be missed? Absolutely. This is essentially meant for us
+to force an update and that's what we're gonna do
+next. So uh let's look at an example. Yes.
+So I make sure I heard correctly.
+So this algorithm will find a separating hyperplane for the
+training data set and then we will plot actual to the test data set.
+This is a very good question. So the the separating hyperplane
+that you find is a hyperplane that performs
+perfectly with respect to the training data set, which we will
+then use on our testing data. The reason that we do that is
+because we assume, and this is a reasonable
+assumption. There is a part of ML in fact, a
+part that I'm I'm currently very interested in that I'm studying
+with a couple of students of mine uh that assumes will or ask the
+question, what, what if this particular assumption is broken?
+But um in general, one of the things we're going to
+say is that historical information is relevant for us
+to learn patterns in future data, right? That's the whole point.
+If I see historical information, I see a bunch of data that
+should tell me something about the data that I'm going to see
+as well. And so it sort of stands to
+reason that when I see a data set like this, I'm learning
+patterns in that data set. And so when I get a new data
+point, now I'm going to uh classify it with respect to what
+I learned. So this is equivalent to saying when I learned a hyperplane like
+this, this was with respect to this
+training data set. But now when I get a new data
+point, so let's say I get a new data point somewhere here, I'm
+going to classify it as negative because I'm going to classify it
+with respect to that, that hyperplane that I learned. Yeah. So for a given data set, there
+could be a lot of separating hyperplane.
+So does this converge on or anyone that's, that is very, very interesting.
+And it's a question that you will think about in your
+homework as well. So yeah, so the question is um actually you should try it out
+and, and think about it. So uh but the short answer is yes, it
+will just converge on the hyperplane that it gives us for
+the particular iteration of algorithm or the uh for the
+particular um uh uh sequence of data points that be
+actually considered very good.
+Yes. So the, the sequence of data
+points that you put in actually, if you swap two data points and you should definitely try that
+out and see what happens. Yeah. And in fact, in fact, with the,
+with the example that I have on here, you'll actually see what
+would happen in that case. Yeah. Good. Yeah.
+So if the hyperplane doesn't exist with the algorithm keep
+going. Yes.
+Why this? Yeah, it never exits that loop.
+The loop is always true. So it just loops forever. Very good. You know, it's like 90 no, it's
+9 30 now, but it's like 9 a.m. and you guys are like so on it.
+That's so great. That's awesome. Yeah, I thought about updating the much like positive or negative.
+Uh I'll actually do an example and then, yeah, I'll repeat that
+and then tell me if you want me to uh rephrase it.
+OK. OK.
+So let's actually do that example because some of these
+are um can be answered by this.
+So uh somebody in the noon, not noon, what, what time
+is the next lecture? 10 30 in the 10 30 lecture asked me. Uh how well you, you stated that
+these are column vectors, the inputs are column vectors.
+Can you hold off on the question till we finish the example. So um that you said that these
+are column vectors. Uh But then uh you know, I
+specify this in tables. So I wanna be very clear we are conceptualizing these as
+column vectors with respect to linear algebra.
+You might get your data in whatever way, right? We want to
+take that data and we want to put it in a particular form to
+be able to use these algorithms on it.
+So for example, I may get my data set and you will get your data.
+Well, you'll be constructing your own data and P one.
+But um in project one, if you look at your, if you look
+at your data set, it could look something like this.
+Here's data 0.1 here's data 0.2. That's a corresponding label
+here. So what is X one? How many, how many data points I
+have? I have two data points. So my data set S sub N is going to look this way,
+right? So it's gonna look as X one, Y one X two.
+Remember the bar corresponds to my vector superscripts correspond to the
+data point number and paired notation corresponds
+to the fact that they are an ordered pair. What is X one? What is X 16? Yeah, it's the column vector 66. What is white one? It's what? Yeah, it's positive one.
+Yeah, very good. Uh And then uh similarly 52, so
+two is 91 and the label uh Y two is negative one. So I am actually gonna put that. Oh the and it is um and then to, I forgot who asked
+me this question uh to oh yeah, you did uh to uh
+the question that I had before. Well, my initial guess my theta
+zero is always going to be the zero vector.
+In this case, you know, it's specified as a two dimensional
+vector because uh the dimensionality of the data
+points and the parameter vector will
+match. OK. First things first does there
+exist a misclassified point? How will we check whether there's a
+misclassified point? We do Y I theater at X I, what is Y I, the
+X for every I, what is Y I, the X I for K equal to zero. Yep, it is in fact equal to
+zero. It's all equal to zero.
+So it will always trigger misclassification. That's the point the first time it's always going
+to trigger misclassification. And additionally, it's going to
+trigger an update that is with respect to my data
+set. What's my first update going to
+be? Well, the first thing I'm gonna do is I'm gonna go through
+this and I'm gonna say, uh if Y I is not equal to um H
+I, the uh theta X or I think the
+way that I had said it earlier um can replicate here is less than a equal zero.
+So if this Y I theater X I is um the K dot X I is less than equal
+to zero, that is going to trigger an
+update. So my theta one, right K plus one is one.
+So theta one is going to be theta zero plus or minus plus plus what exactly? So theta zero is, in fact, I'm
+sorry, theta one is, in fact just going to be +66. Very good. That's the one. How should the decision boundary
+look? How will the decision boundary
+look exactly exactly.
+It has to be orthogonal to theater.
+And so it'll look this way. That's excellent. Mhm OK.
+So that was my first update. This is what's happening
+visually. Remember we can able to see all
+of this visually because we have this really great data set, two
+data points, two dimensional space.
+It's not going to be your experience in general.
+Uh But this is just for us to be able to understand visually
+what's going on. Ok.
+Now here is my next update, my next update.
+Theta one, what is theta one going to be? First of all, uh
+theta one is uh sorry, I already said what the one is.
+Um, hold on. Uh What is theta two going to
+be? First of all, how am I going to
+check whether the two is going to make an update or not? When will, when will I update
+from theater one to theater two? What's the next thing I'm gonna
+check exactly.
+I'm going to check my next data point, which is X two. What am I going to check with?
+Respect to X two? What am I gonna check with? Yes, exactly.
+Is it classified correctly by uh yeah.
+Which the theta one exactly.
+Is it classified correctly by the decision boundary given by
+theta one? Ok.
+So is it class or is it? No, it's not.
+We can see this already. How can we see this? We can see
+this because X two lies on the same side of the decision
+boundary as theta one. So it's going to be classified
+as positive. And so it's going to be
+misclassified because this should be, you know, classified as
+negative. So what's gonna happen? Theta two is going to get
+updated. So I'm gonna give you a couple
+of minutes to work out what theta two will
+be a couple of minutes, two minutes and then you can put that on the
+phone. They don't, his name is Chris. Food. Can my three? I think my thought if you had it actually makes sense one. Oh yeah.
+But do you like because I'm just confusing because type of class if I hear and, and the whole perception out there waste your time. Double 06. And let's see you coming up this one precision boundary. I was not sure.
+I, I looks like negative 35 transport one of the under the I in. Yeah, they don't want it anymore. This, oh, ok. Let me just give them the choice and I just see this is a bar.
+I, I like what else that has like, tell me what's wrong. This is why we have two and she took a whole class. My God, literally anything like I 91 because I like, oh, like, I don't know. All right.
+Um, unfortunately I'm having trouble accessing,
+um, wireless here. Um, change your house. Exactly. I, um, very unwisely changed my
+password yesterday. So I'm gonna have to
+authenticate all manner of things before I can access the
+form. Um Oh, there it is.
+Ok. Finally.
+All right. Ok.
+So let's see. Uh 15 of uh, no, 48% of you 50% said c uh, but actually there's a bunch
+of other people who also said like negative 35.
+So that's, that's, I think, um, I think
+the, I think the primary response
+here. Ok.
+All right. So, uh given that you're, you're
+in fact uh correct uh most of you are correct in
+any case. Uh Here is the, here's the way
+that you would update that. So the way that you'd update
+that is you take theta two. Ok. Theta two is theta one minus X
+two. Now, I wanna show you something
+uh visually. OK. Uh What's going on here? So here
+is my um here is my X two. OK.
+That's my current guess of theta theta one that's X two. Since I am going to subtract X
+two from my current of theta one. I'm essentially adding negative
+X two. So that's negative X two, right? Adds negative rates too. And so you see here, this is my
+hm I'm gonna do that and that's effectively going to
+be my theater too, right? If I look at what's happening to
+from theta one to theta two, I'm having its swing in this
+direction, it's sort of rotating from this angle all the way to this angle
+correspondingly remember that there is a corresponding
+orthogonal decision boundary here that's
+also getting rotated corresponding to that. What is happening when we
+subtract X two is that the update is shifting my data.
+In this case, it's only rotating and it's only rotating because I
+don't have an offset. So I have to go to through the
+decision boundary, all of my possible hyper planes go through the
+decision boundary. And so this rotation is
+effectively trying to rotate the decision boundary in such a way
+as to correctly classify X two a quick second. I just, I can't see, oh, you
+can't see the. Ok. Let me see. I wanted to be a like not, not
+too dark you. Yeah, no problem. Uh Thank you for telling me.
+All right. So, so we rotate the X one this way, so that we
+get X two. Why are we rotating it this way
+we are using X two to tell us or we were wrong? And how were we
+wrong? OK.
+So every update is with respect to a single data point at a
+time. And it's effectively in this
+case, going to just tell you how much to rotate the hyperplane.
+Why just rotate and not translate? Because we don't have
+an offset. When we have an offset, we tell
+you both things. It'll essentially tell you how
+to shift the hyperplane in the correct direction.
+Question. Does this algorithm ever um have
+to like update for this us the same data point twice? Like it?
+Very good question you will notice in our
+algorithm, it does not just cycle through the data set once.
+So in fact, you could, you could have to go through the
+same data set multiple times and get to that, get to, you know, make an update
+with respect to public. In fact, I'm going to make an
+even stronger claim than that. So my next, my next. Ok.
+So here's my, here's my updated version of the two.
+What happens next? What about the three, the three or both? 83? What? Huh. I think someone raise their hand
+and be praying. I mean, yes, there's not a misclassified point. That's right.
+All of the data points now are correctly classified.
+You know, this one lies on the correct side of the
+decision boundary. This one also right, lies on the
+correct side, opposite side as stated too.
+So it will be negatively classified.
+Everything is correctly classified.
+What happens then we go through here and this Y loop now is
+false. The condition of the Y loop is
+false. So we exit this and it outputs
+theta two. So the output of this, this
+algorithm is theta two. It's the theta K which in this
+case is theta two. OK.
+And that specifies our decision and boundary. So I want to answer your
+question a little bit more in detail.
+So a few more, few uh like a couple
+more observations and then I'll uh be able to tell you that uh
+first we are updating with respect to one data point.
+I know I'm bela this point, but this does
+be super important by the end of this lecture, you'll see why. The second thing is that we're
+moving it in the correct correct direction.
+Now, one of the things that I said was, you know, it's
+rotating with respect to that we can see that visually.
+But remember I told you that's great and all to be able to see
+it in two dimensional space. But what if it were in a higher
+dimensional space like in ad dimensional space? Well, it
+turns out we can also show analytically that it's moving it
+in the correct direction. But what is correct direction
+mean analytically? But here's the claim, the claim is the claim is this, the claim is
+that if the, OK? Ignore that bit, OK.
+I'm just going to wipe that out for a second and then we'll come
+back to it. Ignore that.
+But for now, all right, this is the claim. If I, if there is a data point
+that was misclassified. So if there was a misclassified
+data point, I and the update was made with respect to that data
+point. OK.
+So the K went from theta K to theta K plus one with respect to that one data
+point. If I look at why I theta K dot X I, that's gonna be positive or
+negative. So many other, suppose X I was misclassified a
+misclassified point with respect to theta K. If I do Y I theta K dot X I, that's going to
+be positive or negative. There are only two answers I looked quizzically when you
+said positive, it has to be negative.
+Why does it have to be negative? Why is it negative? For the reason I just said it's
+misclassified. If the K misclassified a data
+point, then if I do sign of theta K dot X I, it's going to
+disagree with my Y I. So if I take the product of Y I
+and the K dot X I, that has to be
+negative when there's a disagreement, that product is
+negative. And so this quantity is going to
+be negative for a misclassified point. Mhm Negative for a misclassified point, misclassified with
+respect to with respect to the key might be yeah, correct negative or you're
+right. Um Non positives.
+OK. Uh You're right, not positive, it's not positive with respect
+to that particular data. So this quantity is is bad, it's
+negative or it's or it's zero. What would we like that quantity
+to be? Yeah, we'd like it to be
+positive. We'd like it to be positive. So to move something in the
+correct direction would mean when I take the updated value of
+the the K plus one and I compute Y I the K plus one dot xi I should get a
+value that is bigger than the value that I have right
+now, right? Hopefully positive, but at least
+bigger, at least bigger. And that's what the algorithm is doing. So even though we're seeing all
+this, you know, nice visual swings and on what's really
+happening is this quantity is being made more positive, it's being made more positive,
+not necessarily fully positive, but it's being made more
+positive. It's being made bigger how do
+you prove that? Actually the proof is, is, is interesting and it's uh it's really nice.
+So, uh here is the proof. The proof is uh one line proof.
+Really? This is why I theta K plus one dot X I, if I
+know that the K plus one relied on theta K this way,
+right? I updated it with respect to X I because I was
+misclassified. So I can plug in. Here's my decoration, I can plug in Y I insert the K plus one.
+I'm going to rewrite it as just the K plus Yix I dot X I, you know, these things are very,
+even in your homework and exams and in general, when you're
+working with them, very important to keep track of
+what's a vector and what's a scaler. Don't mix the two up.
+That's why. And sometimes students say, you
+know, I ignored it right now, but I will start correcting it
+if you say theta times X I sorry times it's
+dot OK. So that is actually important.
+Multiplication is a different quantity than is dot product in
+a product. So give me a second.
+So in fact, if you look at this is theta K, this is Y I times X
+I, this is theta K plus one dot X I, the dot Product distributes over uh over uh uh
+plus. And so you have theta K dot X I,
+that's this thing right here. So actually let me write that
+down because why I, so again, I have, I'm
+associating this and this, right? This is my theta K plus
+one dot X I, so I'm gonna rewrite that as Y I theta K dot X I, that's the first part of the, that's the first part of the um uh the distribution and then plus Y I times Yix I dot X I, OK.
+So why is, where are, where are all these different wires coming
+from? Uh This, this why I is this Y I and yellow and should be all right.
+OK. And then this, why I is this
+way. OK. Hold on. OK.
+And so we have uh Y I, the, that's this thing right here. And then we have Y I times yiy I
+is either plus one or it's negative one.
+So Y I squared is always exactly Y I squared is always
+one. So we can ignore that.
+And then we have X I dot X I, that's the L two norm squared of X I.
+So you have Y I theta K dot X I plus this
+magnitude of X I squared. If the X I, this is a magnitude.
+So if the X I vector is not the zero vector, then this is a
+positive quantity, a strictly positive quantity.
+And if it's a strictly positive quantity, this is in fact
+strictly greater than this. Now, I'll take a um since you mentioned like being
+careful of products can we not use the, the X for that, that's
+actually the cross product. No.
+So that, that's why this is actually very critical and we
+use X in math all the time. So it's important to get used to
+that. The cross product is in fact,
+typically written this way and X is typically written this way.
+This is why we use that rotation for X.
+Yeah. Yeah.
+X is a, we can't get away from it in math in general.
+Yeah. Uh And you know, actually that's
+such a like it's not even a thing I see anymore, but
+literally, I cannot think of a paper I have read where we haven't used X for the, for
+the, for the uh feature variable.
+It's actually very interesting. OK. OK. Any questions, how do you know like if it so
+like increases it for this particular misclassified plan?
+How does it not decrease with the other point? We don't know
+that it does it, what we do know is if you go
+through the, the data set, you know, repeatedly, if there is
+such a thing, it will eventually stop.
+And that's why we have that proof.
+So the proof, you know, we could tell you just go go into the
+proof. Uh But we're not going to do
+that, we're going to actually break it down into like lemmas
+for you to sort of prove and then put it together.
+So, yeah, it's very interesting to see. Um And it's actually related to
+a concept. We will be talking about a few
+uh a few lectures as well. So great question.
+Yeah. Mhm.
+So uh so OK, so another question that might occur to you is uh ah so does this mean actually let
+me ask that question first. So does it this remember is a well non positives quantity
+uh point well taken? So it's not a positive quantity, this quantity is it necessarily positive? No, when is it not positive? When is it when it's negative or
+zero? Like no, not, not that way. I have this really negative
+quantity, let's say it's negative.
+OK. Uh Just to keep it clear, it's
+like negative 10. I make the update. What values can it now be? If I know with the update it was
+made with respect to a vector that was not the zero vector.
+What values can it now be? It's negative 10.
+What values can it be? Give me an example value.
+It can be. Yeah. Yeah, exactly.
+It can be negative five. We want it to be positive, we
+want it to be like one or something like this but it could
+be negative side. When does it not make it all the
+way to the positive side? What what would happen here for
+it not to make it all the way to the positive side? Yes.
+You in the back when the value of the X I square
+is less than the uh the negativeness of that point.
+Exactly. Right.
+When excise square, the magnitude of the vector is too
+small. That's when. So visually what would happen?
+We have a swing, right.
+We have a swing like this, but we don't swing all the way to
+make that point correctly classified. We swing it just a little bit
+but it doesn't quite get it all the way over that zero hump to
+the positive side. That's what could potentially
+happen. So, in fact, um here is an example, here we have three data points, data point number one is X one, X two and X three. Very simply speaking.
+Um I actually know exactly what my first update is gonna look
+like. It's always gonna look like the
+one equal to X one. So it's gonna be this, that's
+going to be my decision boundary.
+And just visually you can, you can already tell that X two is
+not gonna be correctly classified by that decision
+boundary, right? So it's now gonna update with
+respect to two. Does everyone agree with that? Yeah, it's going to not be
+correctly classified by the decision boundary.
+In fact, it's gonna look like this. OK.
+So it's not gonna be correctly classified by that decision
+boundary. So it's going to make an update.
+And here you can actually see visually what's going on.
+You can in fact see that this is way too small vector for it
+to really make that update enough, make that swing enough,
+we want this swing to be in this direction, we want it to be correctly
+classified. So we want the decision boundary
+to be shifted from this angle to this angle.
+Uh But what ends up happening is that if you look at the update because of the, the
+size of um X two, the magnitude of X two, you'll see that the
+update is just just undershoots how much it
+needs to be. That's the new oops, that's the new mix. So it shifted, it rotated just not enough because that magnitude was not
+big enough to make that update work. And what I've worked out here is
+analytically what's happening as well.
+So we want to look at why I the K dot X I, that quantity was
+originally negative but even after the update, why I the K
+plus one dot X I is still negative, we wanted it to be
+positive but it's still negative. The difference between them as
+you were pointing out, the difference between them is in
+fact the magnitude squared of X two. This is what? OK.
+So it became less negative but it's not positive yet. Yes.
+So, so to your question, could it happen that you, you know,
+you misclassified something before? Yeah, but kind of worse.
+In fact, this is the question that you were asking earlier as
+well. Kind of worse than that.
+What could potentially happen is that you just don't even
+correctly classify the current uh the current point in
+question. Very good. Yeah. All right.
+So going back to some of our
+assumptions, so we made a couple of assumptions, we made one
+assumption which is that the data, the data set is linearly separable
+by a decision boundary that goes through the origin.
+We're going to break that decision that assumption first.
+And then we also said we're going to assume that it is linearly separable at
+all. Even with a linear decision
+boundary that is allowing offsets, we're going to break
+both those assumptions one at a time, this first assumption
+turns out to be like fairly simple to break. So the first thing I'm gonna do
+is I'm gonna show you all of what we've been talking
+about can very easily be extended to the case with
+offset. You know, we've been making this
+huge assumption that the decision boundaries have to go
+through the, go through the origin. And uh it turns out I can use
+the exact same, exact same um algorithm to learn a decision
+boundary that does not have that restriction. So how am I gonna do that? Really simple? OK. I'm going to take my original
+data set. Xiyix.
+I comes from RD. I'm going to map it to a space.
+This is a sort of a very sort of simple way of augmenting your
+data with additional, not really additional information but like
+information that allows allows it to sort of learn something or
+change, change the underlying data set in a way that it allows
+it to learn something more interesting. So I'm gonna take my original
+data set that lies in RD and I'm going to add one more dimension
+to it. So my dimensionality is now
+gonna be RD plus one. That additional dimension I'm
+going to add is going to be a constant for the data set.
+So I'm going to translate this. I'm gonna take my X I and I'm
+going to augment it with one additional
+dimension that I'm gonna fix at one. So I'm gonna say uh X I prime is one X I, OK.
+So uh for example, if X I is, I don't know 91, then X I prime is, oh I shouldn't say 91, let's
+say 92. X I prime is 192. OK.
+So it went from R two to R three. OK.
+I just added one dimension. Now, I'm gonna pretend that's my
+data set. I'm gonna pretend that's my data
+set. Uh X I prime Y I, so I've not changed the labels.
+I've just changed, you know, slightly change the
+feature vectors. OK.
+So now my new data set is SN prime, which is X I prime Y I, OK. Now I'm gonna pretend this was the
+data set that I had originally. And I'm gonna run this data set
+through the Perceptron algorithm. OK. If the Perron algorithm converges, if it converges, then I have an output theta, I'm gonna call that theta
+K plus one prime. OK. Uh Our theta K uh actually
+there's a increment on the, so the output is gonna be the K prime.
+OK. So the output output of this algorithm is
+gonna be theta K prime.
+If it converges, if it converges, what was my training
+error for this data set? Zero? No training error for this
+data set. It perfectly classifies
+everything which means for every I Y I, the key prime dot X I is what it has to be strictly positive, right? If I converged every data point is correctly
+classified by this uh by this decision boundary.
+And so why I the key primed on excise in fact
+strictly greater than zero, which means the decision of I
+should say, which means the decision
+boundary given by theta key prime. Yes dot X prime equal to zero perfectly classifies correctly.
+Classifies every data point in this training data set. What does this decision boundary
+really look like? Well, it is what we would have originally
+got as theta K plus this additional, this additional dimension that I added in because my X I
+was my original X plus this additional dimension and this additional dimension which I augmented with just one
+equal to zero. But what is this? This is just
+theta K dot X plus V equal to zero, which is the equation of, of
+hyperplane with offset. So if there is a decision
+boundary that has offset and is able to
+perfectly classify my data set. Then this this this uh augmented
+version of the Perceptron algorithm will be able to find
+it. So I no longer have to force my
+decision boundaries to go through the uh through the
+origin. OK.
+So I could also go back and rewrite this algorithm
+explicitly to explicitly say what kinds of
+updates I'm making with the. This is literally the same
+thing. OK.
+I haven't changed anything at all. It's literally the same decision
+boundary. I'm sorry, the same algorithm.
+I'm just like teasing out what's happening in that first
+dimension. Usually we call that the zeroth
+dimension because it's not really part of the part of the
+vector. But in that offset dimension,
+this is what's explicitly happening.
+So all I'm doing is I'm writing out this thing right here. The K prime as this one with this
+one dimension uh with this one additional dimension and X I
+prime also with that one additional dimension, I'm learning this but I'm given this. And so if you go back here, in
+fact, one thing to note is that theta
+K prime is in fact ad plus one dimensional vector as opposed to the original theta
+K that you would have learned, which is ad dimension. The question why is like the
+offset one dimensional instead of like multi dimensional? I thought you were gonna ask me
+a different question. Uh Why is it one dimensional because right now it looks like B is
+just a number. Yes, it is a scalar. Yeah.
+But say in like multidimensional
+space, why is this offset with you? What dimension? So um regardless of the
+dimensionality here, right? Regardless of the dimensionality
+here, I'm adding one more dimension
+for offset offset. Just means so I have some
+ambient space which is D dimensional.
+In our case, it was D equal to two, but the offset doesn't have to
+be multidimensional for us to get an offset of the of the
+origin. So imagine um ad dimensional
+zero vector which is the origin, right? For it to be off origin
+for the origin not to actually satisfy this.
+All you need is an additional scaler, right? Because remember the XS that
+satisfy theta dot X plus B equals zero are still D dimensional. Does that make sense? Yeah.
+So all you need is an additional uh scalar quantity for it to
+have an offset? Yeah, like a question like what we
+have one as additional like uh dimension like for, for we have one can we
+have the numbers or like what's the meaning of that one? Yeah.
+So this one is a constant. That is what it really means.
+If you change that one, it would in fact change the kind of
+updates you do. So that's the only the only real
+difference you have to have it be constant.
+But otherwise there's no real sort of meaning to one, it's
+just a convenient, convenient constant to choose. Yeah, because remember, we don't
+want it to be like something that we have to learn like what
+that value should be. That's what B is for.
+That's what that additional dimension of the K prime is for. Uh But this is just a constant
+constant um uh dimension.
+We're sort of saying that I, I know I have to learn one
+additional one additional value here.
+And so I'm going to augment my X with that additional value. We'll see this our favorite
+constant one shop in another place as well.
+Yeah, the purpose of the, the purpose of the offset is to
+be able to learn a decision boundary like this, it's to be able to learn a
+decision boundary that has offset, which means that you
+want a decision boundary that need not go through the origin. So that means that I could learn
+a decision boundary for this decision boundary is not mm
+oh That's not good enough. Yeah. OK.
+Now this decision boundary is not going to uh correctly
+classify all my data points. In fact, no decision boundary
+that goes to the origin is going to be able to correctly classify
+all my data points, right? I in fact need a decision
+boundary that looks like this. That's what we are allowing,
+we're allowing for that offset. OK. All right.
+I know, I know this is, this is um a non-trivial jump to make
+it's a conceptual jump to make. So take it in this time and then if
+you have questions, you can, we can address it again on Monday,
+you'll also go over this in discussion and hopefully, you
+know, a second sort of iteration through this will, will, will
+definitely help. OK. All right. So a couple of observations, you
+know, that I think is very important to keep in mind first,
+if the data set are, if the, if the examples are not linearly
+separable, then somebody asked the question, does it converge?
+And yes, in fact, it does not converge.
+And additionally, you know, you at least want to be able to get
+to a place where the decision boundary may be misclassified
+one data point. And that's OK, like it's the
+lowest fraction of data points that you can possibly
+misclassified turns out that it does not do that.
+It will just, it will not converge at all.
+And so you don't have a sense of like which decision boundary to
+use. That doesn't mean that we cannot
+solve that problem. It means that we cannot use
+Perceptron to solve that problem.
+So then why learn Perceptron? Perceptron has some really nice
+properties. It has this property that first
+of all, it converges, you know, uh uh with, with the perfect
+classification for linearly separable data.
+And that's important because it does it, with this really nice
+property, it makes the updates based on a single data point at
+a time and we want to retain that quality of this, of this
+algorithm. The other thing is this
+algorithm is one that was uh proposed many, many years ago,
+in fact, with a view to building what we now have as
+deep learning networks. Um when was it proposed? 1958? And here is uh I get goosebumps
+when I show this because I've seen this now many times.
+But it's just really cool. This is the idea uh that uh Rosenblatt had for, you know, the, the way that was sold was introducing the percept on a
+machine that senses, recognizes remembers and responds like a
+human mind. It only took a few decades to
+get it to a place where it was actually very close to that, you
+know. So uh you know, here is I'm going to
+show you something which is a very simple neural
+network. This is a very simple neural
+network which doesn't look simple.
+But it's actually a really, this is a trivial neural network.
+It's in fact the simplest one that you will learn in this
+class and each of these neurons can be thought of as inspired heavily by the
+Perceptron algorithm. OK. So that's why we learn it.
+So I'm going to take that same idea and I'm now going to ask
+the question. Well, OK.
+So that was a, you know, reasonably simple,
+simple, specify, fairly easy to understand and implement
+algorithm to solve a very specific set of
+problems. What if the problems that I want
+to solve are more complex than that? What if the data sets that I'm working with are not
+linearly separable? And I can almost guarantee you that if you
+have a data set that is linearly separable in the original
+feature space, you probably not, you don't have enough data
+points or there's some additional thing there that
+you're not seeing, I would be very suspicious if you had a
+data set that was perfectly literally separable in the
+original feature space, we have only five more minutes if you
+can hold off on that, adding the question at the end of the
+class. All right.
+So, so here's the, you know, the
+simplest, we always try to use the simplest solutions first and
+see why the simplest solutions, the most intuitive ones may not
+work. Uh So here is um here is the goal, the goal was
+to find a parameter of vector that minimizes I'm gonna call
+this empirical risk empirical meaning that, you know, it's,
+it's what we are able to see. So it's like uh related to the
+training data. So here's my empirical risk.
+My empirical risk is uh as defined groups is defined as this quality
+ratio. So I have um I'm trying to find
+a parameter vector that minimizes the fraction of
+misclassified data points. Um The problem the So remember if I know that I can get to
+zero, then I have an algorithm for it.
+That's the perception algorithm. But if I kind of know that this
+is not a linearly separable data set, then I don't have an algorithm
+for it. One thing that you might think
+is well, let's just try to minimize this.
+Let's try to find we have a class of algorithms that can be
+used to minimize certain functions. It comes from convex and non
+convex optimization. So you can just take this
+function and say I just want to minimize this function.
+Let's use some off the shelf algorithms for it turns out this
+particular function very difficult to work with.
+Uh uh It is in fact an NP hard
+problem. One of the hardest problems we
+know in computer science. OK.
+So it's part of this class of problems.
+If you haven't yet taken three, I know you see this somewhat
+into 81. But in 376 you'll have a more formal definition of what
+NP hardness is and it's equivalent to or at least equivalent or
+probably harder than some of the hardest problems in computer
+science. And so not that there is no efficient
+algorithm for this, but rather we don't know of any of
+efficient algorithms for any of these class of problems.
+If you solve one of them, you should be able to solve all of
+them efficiently. And so this is the P equal to NP
+question, you know, is it true that we
+have an algorithm that can solve these efficiently, we don't
+know. And so it's, you know,
+meanwhile, here's this data set that's not linearly separable.
+What do we do? Can't wait for the problem to be solved.
+So we need to solve it. Now, what do we do? But what we
+do is we start asking the question, maybe that particular function
+is too hard to solve. Are there other functions that
+are kind of similar kind of capture what we want? But maybe
+slightly easier to work with uh that we have some algorithms
+that can, you know, tackle them. Uh Turns out the answer is yes,
+otherwise it would be a very short course.
+Um But yes.
+So here is the, here is the algorithm.
+I'm sorry. Here's the, here's the idea.
+The idea is I'm gonna take this loss function and I'm going to define it
+differently. My original loss function was
+this 01 loss function. It was either it either return
+zero. If Y the X I was uh was negative, it
+returned one. If it was positive, it returned
+zero. Sort of undefined at that
+inflection point. We usually say that's equal to
+one. And that's the, the, that's,
+that's my definition. I'm gonna change that.
+I'm gonna use instead what is called a hinge loss function. A hinge loss function has this
+great notion. The notion being that if Y I, the X I is positive,
+that's a good thing. It has 00 loss. If Y I, the X I is negative, the more negative it is the more
+negative Y I, the X I is, the more the loss is going to be. So it increases the worst you're
+doing with respect to a particular data point.
+So if you predict it very badly versus if you predict it badly,
+the loss is going to be different. Another thing with the hinge
+loss function is that if you predicted well, so why are the I was positive? But it was just
+a little positive. So you, you know the data point
+lies very close to the decision but it's correct.
+But it just like really close at that point, you still get a non
+zero loss, you still have a loss associated with it. So when we try to optimize for this
+data, we're trying to find a the that optimizes this idea, then we can actually use this
+class of algorithms called the gradient descent algorithms. The idea behind gradient descent
+algorithms is we take it's not only applied to the convex
+functions, but we take these functions that have a particular
+structure and we keep making updates on
+that structure on that, on the, on the guesses of the optimal
+value of the parameter bit by bit. What you're going to see in your
+discussion is a really simple example.
+So you can work out the, the the specifics of grading descent.
+And then next time we'll apply it to our, to our, uh, our problem. Right.
+See you on Monday. Please do get started with your
+homework before I see you next time. Uh, second thing is, uh, if you
+cannot make it to the tutorial, we do plan to record it.
+So 

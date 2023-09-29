@@ -1,0 +1,9 @@
+pyproject.toml
+scripted/__init__.py
+scripted/__main__.py
+scripted.egg-info/PKG-INFO
+scripted.egg-info/SOURCES.txt
+scripted.egg-info/dependency_links.txt
+scripted.egg-info/entry_points.txt
+scripted.egg-info/requires.txt
+scripted.egg-info/top_level.txt
